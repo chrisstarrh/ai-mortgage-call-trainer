@@ -1,0 +1,1 @@
+module.exports={content:['./app/**/*.{ts,tsx}','./components/**/*.{ts,tsx}','./lib/**/*.{ts,tsx}'],theme:{extend:{colors:{page:'var(--bg-page)',surface:'var(--bg-surface)',border:'var(--border)',accent:'var(--accent)',primary:'var(--text-primary)',muted:'var(--text-muted)'},fontFamily:{sans:['DM Sans','system-ui','sans-serif'],mono:['DM Mono','monospace']}}},plugins:[]};
