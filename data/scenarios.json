@@ -1,0 +1,62 @@
+[
+  {
+    "id": "cashout-debt-consolidation",
+    "title": "Cash-Out Refi: Debt Consolidation",
+    "summary": "Borrower wants cash out but is worried about rate, payment, and restarting the loan.",
+    "difficulty": "Medium",
+    "win_condition": "Book a full application or consultation with permission to review numbers.",
+    "borrower": {
+      "name": "Michelle Torres",
+      "age": 44,
+      "personality": "Polite, skeptical, guarded until trust is built",
+      "voice_style": "Warm but cautious",
+      "home_value": 525000,
+      "mortgage_balance": 342000,
+      "current_rate": 5.875,
+      "desired_cash_out": 65000,
+      "credit_score_range": "680-700",
+      "motivation": "Pay off credit cards and lower total monthly debt burden",
+      "objections": ["I don't want to restart my loan", "The rate seems high", "I need to talk to my husband", "I'm just shopping"]
+    }
+  },
+  {
+    "id": "heloc-shopper",
+    "title": "HELOC Shopper Comparing Banks",
+    "summary": "Borrower thinks a HELOC is automatically better than a cash-out refinance.",
+    "difficulty": "Medium",
+    "win_condition": "Get borrower to compare options side-by-side instead of judging only APR.",
+    "borrower": {
+      "name": "David Kim",
+      "age": 39,
+      "personality": "Analytical, price-sensitive, slightly impatient",
+      "voice_style": "Direct and practical",
+      "home_value": 710000,
+      "mortgage_balance": 455000,
+      "current_rate": 4.25,
+      "desired_cash_out": 90000,
+      "credit_score_range": "720-740",
+      "motivation": "Home improvements and paying off a few high-interest cards",
+      "objections": ["My bank said a HELOC is cheaper", "I don't want to touch my first mortgage", "What's your rate?", "Can you just email me numbers?"]
+    }
+  },
+  {
+    "id": "va-cashout",
+    "title": "VA Cash-Out: Payment Relief",
+    "summary": "Veteran borrower needs payment relief but is concerned about fees and trust.",
+    "difficulty": "Hard",
+    "win_condition": "Earn enough trust to continue with a VA cash-out review and set a follow-up.",
+    "borrower": {
+      "name": "Robert Hayes",
+      "age": 52,
+      "personality": "Protective, distrustful of lenders, family-focused",
+      "voice_style": "Calm but skeptical",
+      "home_value": 480000,
+      "mortgage_balance": 298000,
+      "current_rate": 5.5,
+      "desired_cash_out": 50000,
+      "credit_score_range": "660-680",
+      "motivation": "Reduce monthly pressure and consolidate debt",
+      "objections": ["I've been burned by lenders before", "What are the fees?", "I don't want my payment to jump", "Is this really VA approved?"]
+    }
+  }
+]
