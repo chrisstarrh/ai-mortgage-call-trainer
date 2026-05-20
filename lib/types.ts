@@ -1,0 +1,7 @@
+export interface Borrower{name:string;age:number;personality:string;voice_style:string;home_value:number;mortgage_balance:number;current_rate:number;desired_cash_out:number;credit_score_range:string;motivation:string;objections:string[];}
+export interface Scenario{id:string;title:string;summary:string;difficulty:'Easy'|'Medium'|'Hard';win_condition:string;borrower:Borrower;}
+export interface TranscriptLine{speaker:'loan_officer'|'borrower'|'system';content:string;sequence_num?:number;}
+export interface CategoryScores{discovery:number;rapport:number;needs_analysis:number;product_positioning:number;objection_handling:number;compliance_safe_language:number;closing_next_step:number;}
+export interface Scorecard{overall_score:number;pass_fail:'pass'|'fail';category_scores:CategoryScores;what_went_well:string[];missed_opportunities:string[];best_objection_response:string;coaching_notes:string[];recommended_drill:string;}
+export interface TrainingCall{id:string;user_id:string;scenario_id:string;mode:'text'|'voice';status:'started'|'completed'|'scored';started_at:string;completed_at?:string;duration_seconds?:number;}
+export interface RepStats{user_id:string;total_calls:number;calls_passed:number;avg_score:number;avg_discovery:number;avg_rapport:number;avg_needs_analysis:number;avg_product_positioning:number;avg_objection_handling:number;avg_compliance:number;avg_closing:number;last_call_at:string;}
