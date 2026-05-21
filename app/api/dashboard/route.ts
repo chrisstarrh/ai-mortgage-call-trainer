@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const { data: reps } = await supabaseAdmin.from('profiles').select('id, full_name, email');
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const { data: recentCalls } = await supabaseAdmin
