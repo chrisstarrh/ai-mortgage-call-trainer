@@ -11,6 +11,11 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ callId: data.id });
 }
 
-export async function GET(req: NextRequest) {
-  return NextResponse.json([]);
+export async function GET() {
+  const { data } = await supabaseAdmin
+    .from('training_calls')
+    .select('id, scenario_id, mode, status, started_at, scorecards(overall_score, pass_fail)')
+    .order('started_at', { ascending: false })
+    .limit(20);
+  return NextResponse.json(data ?? []);
 }
