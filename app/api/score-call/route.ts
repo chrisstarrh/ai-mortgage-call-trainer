@@ -2,33 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 
 export async function POST(req: NextRequest) {
-  const { scenario, transcript, callId } = await req.json();
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-  const transcriptText = transcript
-    .map((t: any) => (t.speaker === 'loan_officer' ? 'Loan Officer' : 'Borrower') + ': ' + t.content)
-    .join('\n');
-
-  const prompt = 'You are a mortgage sales training evaluator. Score this call.\n\nScenario: ' + scenario.title + '\nWin condition: ' + scenario.win_condition + '\n\nTranscript:\n' + transcriptText + '\n\nReturn ONLY valid JSON:\n{"overall_score":0,"pass_fail":"fail","category_scores":{"discovery":0,"rapport":0,"needs_analysis":0,"product_positioning":0,"objection_handling":0,"compliance_safe_language":0,"closing_next_step":0},"what_went_well":[],"missed_opportunities":[],"best_objection_response":"","coaching_notes":[],"recommended_drill":""}';
-
-  const msg = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1000,
-    messages: [{ role: 'user', content: prompt }],
-  });
-
-  const text = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
-  const clean = text.replace(/```json|```/g, '').trim();
-  
   try {
-    const scorecard = JSON.parse(clean);
-    // Try to save to DB
-    try {
-      const { supabaseAdmin } = await import('@/lib/supabaseAdmin');
-      await supabaseAdmin.from('scorecards').insert({ call_id: callId, ...scorecard });
-    } catch {}
+    const { scenario, transcript } = await req.json();
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    const lines = transcript.map((t: any) => (t.speaker === 'loan_officer' ? 'Loan Officer' : 'Borrower') + ': ' + t.content).join('\n');
+    const prompt = 'Score this mortgage training call.\n\nScenario: ' + scenario.title + '\nWin condition: ' + scenario.win_condition + '\n\nTranscript:\n' + lines + '\n\nReturn ONLY valid JSON with this exact structure, no markdown:\n{"overall_score":75,"pass_fail":"pass","category_scores":{"discovery":15,"rapport":12,"needs_analysis":12,"product_positioning":12,"objection_handling":12,"compliance_safe_language":8,"closing_next_step":7},"what_went_well":["Good opening","Built rapport"],"missed_opportunities":["Could ask more questions"],"best_objection_response":"Good handling","coaching_notes":["Work on discovery","Practice objections"],"recommended_drill":"Discovery questions drill"}';
+    const msg = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }],
+    });
+    const text = msg.content[0].type === 'text' ? msg.content[0].text : '{}';
+    const scorecard = JSON.parse(text.replace(/```json|```/g, '').trim());
     return NextResponse.json(scorecard);
-  } catch {
-    return NextResponse.json({ error: 'Failed to parse scorecard' }, { status: 500 });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
