@@ -1,10 +1,10 @@
 import Link from 'next/link';
 
 const SCENARIOS = [
-  { id: 'cashout-debt-consolidation', title: 'Discovery Call', sub: 'Cash-Out Refi', summary: 'Gather full application details and book a second call to review the numbers together.', difficulty: 'Easy', tag: 'easy', borrower: 'Michelle Torres', icon: '👩' },
-  { id: 'second-call-pitch', title: 'Second Call Pitch', sub: 'Present the Numbers', summary: 'Explain the benefits clearly and concisely. Handle objections and secure a commitment.', difficulty: 'Medium', tag: 'medium', borrower: 'Michelle Torres', icon: '👩' },
-  { id: 'heloc-home-improvement', title: 'HELOC Discovery', sub: 'Home Improvement', summary: 'Walk an analytical borrower through HELOC options and get them to submit a formal application.', difficulty: 'Medium', tag: 'medium', borrower: 'James Park', icon: '👨' },
-  { id: 'va-cashout-payment-relief', title: 'VA Loan Call', sub: 'Payment Relief', summary: 'Earn the trust of a veteran who has been burned before. Complete the VA application.', difficulty: 'Hard', tag: 'hard', borrower: 'Robert Martinez', icon: '👨' },
+  { id: 'cashout-debt-consolidation', title: 'Discovery Call', sub: 'Cash-Out Refi', summary: 'Gather full application details and book a second call to review the numbers together.', difficulty: 'Easy', tag: 'easy', borrower: 'Michelle Torres', icon: 'ð©' },
+  { id: 'second-call-pitch', title: 'Second Call Pitch', sub: 'Present the Numbers', summary: 'Explain the benefits clearly and concisely. Handle objections and secure a commitment.', difficulty: 'Medium', tag: 'medium', borrower: 'Michelle Torres', icon: 'ð©' },
+  { id: 'heloc-home-improvement', title: 'HELOC Discovery', sub: 'Home Improvement', summary: 'Walk an analytical borrower through HELOC options and get them to submit a formal application.', difficulty: 'Medium', tag: 'medium', borrower: 'James Park', icon: 'ð¨' },
+  { id: 'va-cashout-payment-relief', title: 'VA Loan Call', sub: 'Payment Relief', summary: 'Earn the trust of a veteran who has been burned before. Complete the VA application.', difficulty: 'Hard', tag: 'hard', borrower: 'Robert Martinez', icon: 'ð¨' },
 ];
 
 export default function Home() {
@@ -72,7 +72,7 @@ export default function Home() {
                   Text Call
                 </Link>
                 <Link href={"/training?scenario="+s.id+"&mode=voice"} style={{flex:1,textAlign:'center',padding:'11px 16px',background:'transparent',color:'var(--text-muted)',fontWeight:500,fontSize:13,borderRadius:10,textDecoration:'none',border:'1px solid var(--border)',fontFamily:'DM Sans,sans-serif',transition:'color 0.15s,border-color 0.15s'}}>
-                  🎙 Voice Call
+                  ð Voice Call
                 </Link>
               </div>
             </div>
