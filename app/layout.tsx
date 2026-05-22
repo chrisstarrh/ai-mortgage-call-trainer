@@ -1,5 +1,20 @@
+import type { Metadata } from 'next';
 import './globals.css';
-export const metadata = { title: 'AI Mortgage Call Trainer', description: 'Mortgage refinance AI roleplay trainer' };
+
+export const metadata: Metadata = {
+  title: 'MS.IQ — Mortgage Sales Intelligence',
+  description: 'AI-powered mortgage sales call training',
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en"><body>{children}</body></html>;
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
 }
