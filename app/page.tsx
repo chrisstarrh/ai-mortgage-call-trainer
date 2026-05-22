@@ -1,86 +1,84 @@
 import Link from 'next/link';
 
 const SCENARIOS = [
-  {
-    id: 'cashout-debt-consolidation',
-    title: 'Cash-Out Refi: Discovery Call',
-    summary: 'Homeowner open to refinancing but needs to be walked through it. Your goal is to gather full application details and book a second call to review the numbers together.',
-    difficulty: 'Easy',
-    borrower: 'Michelle Torres',
-    personality: 'Polite but skeptical',
-    goal: 'Collect application details + book second call to review numbers',
-  },
-  {
-    id: 'second-call-pitch',
-    title: 'Second Call: Present the Numbers',
-    summary: 'You have the numbers ready. Michelle is back for the review call. Your goal is to explain the benefits clearly, handle objections confidently, and get a commitment to move forward.',
-    difficulty: 'Medium',
-    borrower: 'Michelle Torres',
-    personality: 'Warmer now, but needs clear value',
-    goal: 'Explain benefits clearly and concisely — get commitment to move forward',
-  },
-  {
-    id: 'heloc-home-improvement',
-    title: 'HELOC: Home Improvement',
-    summary: 'Homeowner considering a HELOC for a kitchen renovation. Analytical borrower who compares everything.',
-    difficulty: 'Medium',
-    borrower: 'James Park',
-    personality: 'Analytical and detail-oriented',
-    goal: 'Get borrower to agree to a formal HELOC application',
-  },
-  {
-    id: 'va-cashout-payment-relief',
-    title: 'VA Cash-Out: Payment Relief',
-    summary: 'Veteran seeking payment reduction through VA cash-out refi. Has been burned by lenders before.',
-    difficulty: 'Hard',
-    borrower: 'Robert Martinez',
-    personality: 'Proud, tests you, skeptical of lenders',
-    goal: 'Complete VA loan application and order Certificate of Eligibility',
-  },
+  { id: 'cashout-debt-consolidation', title: 'Discovery Call', sub: 'Cash-Out Refi', summary: 'Gather full application details and book a second call to review the numbers together.', difficulty: 'Easy', tag: 'easy', borrower: 'Michelle Torres', icon: '👩' },
+  { id: 'second-call-pitch', title: 'Second Call Pitch', sub: 'Present the Numbers', summary: 'Explain the benefits clearly and concisely. Handle objections and secure a commitment.', difficulty: 'Medium', tag: 'medium', borrower: 'Michelle Torres', icon: '👩' },
+  { id: 'heloc-home-improvement', title: 'HELOC Discovery', sub: 'Home Improvement', summary: 'Walk an analytical borrower through HELOC options and get them to submit a formal application.', difficulty: 'Medium', tag: 'medium', borrower: 'James Park', icon: '👨' },
+  { id: 'va-cashout-payment-relief', title: 'VA Loan Call', sub: 'Payment Relief', summary: 'Earn the trust of a veteran who has been burned before. Complete the VA application.', difficulty: 'Hard', tag: 'hard', borrower: 'Robert Martinez', icon: '👨' },
 ];
-
-const COLORS = {
-  Easy: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-  Medium: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-  Hard: 'text-red-400 bg-red-500/10 border-red-500/20',
-};
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-page">
-      <div className="max-w-5xl mx-auto px-6 py-12">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-primary mb-2">AI Mortgage Call Trainer</h1>
-          <p className="text-muted">Practice discovery calls, pitch reviews, HELOC, and VA loan calls against realistic AI borrowers.</p>
+    <div style={{minHeight:'100vh',background:'var(--bg)',position:'relative',overflow:'hidden'}}>
+      {/* Header */}
+      <header style={{padding:'24px 40px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid var(--border)',position:'relative',zIndex:2}}>
+        <div style={{display:'flex',alignItems:'center',gap:12}}>
+          <div style={{width:36,height:36,background:'var(--accent)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:13,color:'#020b14',letterSpacing:'-0.02em'}}>IQ</div>
+          <div>
+            <div style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:18,letterSpacing:'-0.04em',lineHeight:1}}>MS<span style={{color:'var(--accent)'}}>.</span>IQ</div>
+            <div style={{fontSize:10,color:'var(--text-faint)',letterSpacing:'0.08em',textTransform:'uppercase',fontFamily:'DM Mono,monospace',marginTop:1}}>Mortgage Sales Intelligence</div>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {SCENARIOS.map(s => (
-            <div key={s.id} className="bg-surface border border-border rounded-2xl p-5 flex flex-col gap-4">
-              <div className="flex items-start justify-between">
-                <span className={"text-xs font-medium px-2.5 py-1 rounded-full border " + COLORS[s.difficulty]}>{s.difficulty}</span>
+        <div style={{display:'flex',alignItems:'center',gap:8,background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:100,padding:'6px 14px',fontSize:12,color:'var(--text-muted)',fontFamily:'DM Mono,monospace'}}>
+          <div style={{width:6,height:6,borderRadius:'50%',background:'var(--emerald)',boxShadow:'0 0 6px rgba(16,185,129,0.5)'}}></div>
+          AI Ready
+        </div>
+      </header>
+
+      {/* Hero */}
+      <div style={{padding:'64px 40px 48px',maxWidth:960,margin:'0 auto',position:'relative',zIndex:2}}>
+        <div style={{marginBottom:12,display:'inline-flex',alignItems:'center',gap:8,background:'var(--accent-dim)',border:'1px solid var(--border-accent)',borderRadius:100,padding:'4px 14px',fontSize:11,color:'var(--accent)',fontFamily:'DM Mono,monospace',letterSpacing:'0.06em',textTransform:'uppercase'}}>
+          Call Training Suite
+        </div>
+        <h1 style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'clamp(32px,5vw,52px)',letterSpacing:'-0.04em',lineHeight:1.1,marginBottom:16,marginTop:12}}>
+          Train smarter.<br/>
+          <span style={{color:'var(--accent)'}}>Close better.</span>
+        </h1>
+        <p style={{color:'var(--text-muted)',fontSize:16,maxWidth:480,lineHeight:1.7,marginBottom:0}}>
+          Practice real mortgage sales calls against AI borrowers. Get instant scored feedback on every conversation.
+        </p>
+      </div>
+
+      {/* Grid */}
+      <div style={{padding:'0 40px 80px',maxWidth:960,margin:'0 auto',position:'relative',zIndex:2}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(420px,1fr))',gap:16}}>
+          {SCENARIOS.map((s, i) => (
+            <div key={s.id} style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:20,padding:'28px 28px 24px',display:'flex',flexDirection:'column',gap:20,transition:'border-color 0.2s,transform 0.2s',position:'relative',overflow:'hidden'}}>
+              {/* Top row */}
+              <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between'}}>
+                <div>
+                  <div style={{fontSize:11,color:'var(--text-faint)',fontFamily:'DM Mono,monospace',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:6}}>{s.sub}</div>
+                  <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:20,letterSpacing:'-0.03em',lineHeight:1.2}}>{s.title}</div>
+                </div>
+                <span style={{fontSize:10,fontWeight:700,letterSpacing:'0.06em',textTransform:'uppercase',padding:'4px 10px',borderRadius:100,fontFamily:'DM Mono,monospace',background:s.tag==='easy'?'var(--emerald-dim)':s.tag==='medium'?'var(--amber-dim)':'var(--red-dim)',color:s.tag==='easy'?'var(--emerald)':s.tag==='medium'?'var(--amber)':'var(--red)',border:'1px solid '+(s.tag==='easy'?'rgba(16,185,129,0.25)':s.tag==='medium'?'rgba(245,158,11,0.25)':'rgba(244,63,94,0.25)')}}>
+                  {s.difficulty}
+                </span>
               </div>
-              <div>
-                <h2 className="text-base font-semibold text-primary mb-1">{s.title}</h2>
-                <p className="text-sm text-muted leading-relaxed">{s.summary}</p>
+
+              <p style={{color:'var(--text-muted)',fontSize:14,lineHeight:1.65}}>{s.summary}</p>
+
+              {/* Borrower */}
+              <div style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',background:'rgba(255,255,255,0.03)',borderRadius:10,border:'1px solid var(--border)'}}>
+                <span style={{fontSize:20}}>{s.icon}</span>
+                <div>
+                  <div style={{fontSize:13,fontWeight:500,color:'var(--text)'}}>{s.borrower}</div>
+                  <div style={{fontSize:11,color:'var(--text-faint)',fontFamily:'DM Mono,monospace'}}>AI Borrower</div>
+                </div>
               </div>
-              <div className="text-xs bg-accent/5 border border-accent/20 rounded-xl px-3 py-2 text-accent">
-                🎯 {s.goal}
-              </div>
-              <div className="text-xs text-muted border-t border-border/50 pt-3">
-                <span className="font-medium text-primary">{s.borrower}</span> · {s.personality}
-              </div>
-              <div className="flex gap-2 mt-auto">
-                <Link href={"/training?scenario=" + s.id + "&mode=text"} className="flex-1 text-center py-2 px-3 bg-accent text-white text-sm font-medium rounded-xl hover:bg-accent/90 transition-colors">
+
+              {/* Buttons */}
+              <div style={{display:'flex',gap:10}}>
+                <Link href={"/training?scenario="+s.id+"&mode=text"} style={{flex:1,textAlign:'center',padding:'11px 16px',background:'var(--accent)',color:'#020b14',fontWeight:700,fontSize:13,borderRadius:10,textDecoration:'none',letterSpacing:'-0.01em',fontFamily:'DM Sans,sans-serif',transition:'opacity 0.15s'}}>
                   Text Call
                 </Link>
-                <Link href={"/training?scenario=" + s.id + "&mode=voice"} className="flex-1 text-center py-2 px-3 bg-surface border border-border text-sm font-medium rounded-xl hover:border-accent/40 hover:text-accent transition-all">
-                  Voice Call
+                <Link href={"/training?scenario="+s.id+"&mode=voice"} style={{flex:1,textAlign:'center',padding:'11px 16px',background:'transparent',color:'var(--text-muted)',fontWeight:500,fontSize:13,borderRadius:10,textDecoration:'none',border:'1px solid var(--border)',fontFamily:'DM Sans,sans-serif',transition:'color 0.15s,border-color 0.15s'}}>
+                  🎙 Voice Call
                 </Link>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
