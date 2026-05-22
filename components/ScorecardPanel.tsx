@@ -1,82 +1,91 @@
 'use client';
 
-const CATEGORIES = [
+const CATS = [
   ['discovery','Discovery',20],
   ['rapport','Rapport & Trust',15],
   ['needs_analysis','Needs Analysis',15],
   ['product_positioning','Product Positioning',15],
   ['objection_handling','Objection Handling',15],
-  ['compliance_safe_language','Compliance Language',10],
+  ['compliance_safe_language','Compliance',10],
   ['closing_next_step','Closing / Next Step',10],
 ];
 
-function ScoreBar({ label, value, max }) {
+function Bar({ label, value, max }: any) {
   const v = Number(value) || 0;
   const pct = Math.round((v / max) * 100);
-  const color = pct >= 80 ? 'bg-emerald-500' : pct >= 60 ? 'bg-amber-500' : 'bg-red-500';
+  const cls = pct >= 80 ? 'score-high' : pct >= 55 ? 'score-mid' : 'score-low';
   return (
-    <div className="flex items-center gap-3 mb-2">
-      <span className="text-sm text-muted w-44 flex-shrink-0">{label} <span className="opacity-50">/{max}</span></span>
-      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-        <div className={"h-full rounded-full " + color} style={{width: pct + '%'}} />
+    <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:10}}>
+      <div style={{width:160,fontSize:12,color:'var(--text-muted)',flexShrink:0,display:'flex',justifyContent:'space-between'}}>
+        <span>{label}</span><span style={{fontFamily:'DM Mono,monospace',color:'var(--text-faint)'}}>/{max}</span>
       </div>
-      <span className="text-sm font-mono font-medium w-6 text-right">{v}</span>
+      <div className="score-track" style={{flex:1}}>
+        <div className={'score-fill ' + cls} style={{width:pct+'%'}} />
+      </div>
+      <div style={{width:24,textAlign:'right',fontFamily:'DM Mono,monospace',fontSize:13,fontWeight:500,color:'var(--text)'}}>{v}</div>
     </div>
   );
 }
 
-export function ScorecardPanel({ scorecard, scenario, onRetry, onNewScenario }) {
-  if (!scorecard) return <div className="text-muted p-4">No scorecard data.</div>;
+export function ScorecardPanel({ scorecard, scenario, onRetry, onNewScenario }: any) {
+  if (!scorecard) return <div style={{color:'var(--text-muted)',padding:24}}>No scorecard available.</div>;
   const scores = scorecard.category_scores || {};
   const passed = scorecard.pass_fail === 'pass';
+  const score = scorecard.overall_score || 0;
+
   return (
-    <div className="space-y-4 pb-10">
-      <div className="bg-surface border border-border rounded-2xl p-5 flex items-center gap-6">
-        <div>
-          <div className="text-5xl font-bold font-mono leading-none text-primary">{scorecard.overall_score || 0}</div>
-          <div className="text-sm text-muted mt-1">out of 100</div>
+    <div style={{display:'flex',flexDirection:'column',gap:16}}>
+      {/* Score hero */}
+      <div style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:20,padding:'28px 28px',display:'flex',alignItems:'center',gap:24}}>
+        <div style={{textAlign:'center',flexShrink:0}}>
+          <div style={{fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:56,letterSpacing:'-0.05em',lineHeight:1,color:score>=80?'var(--emerald)':score>=60?'var(--amber)':'var(--red)'}}>{score}</div>
+          <div style={{fontSize:11,color:'var(--text-faint)',fontFamily:'DM Mono,monospace',letterSpacing:'0.04em',marginTop:4}}>/100</div>
         </div>
-        <div>
-          <div className={"inline-flex px-3 py-1.5 rounded-full text-sm font-medium mb-2 " + (passed ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20')}>
-            {passed ? 'Pass' : 'Needs Work'}
+        <div style={{flex:1}}>
+          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:passed?'var(--emerald-dim)':'var(--red-dim)',border:'1px solid '+(passed?'rgba(16,185,129,0.25)':'rgba(244,63,94,0.25)'),borderRadius:100,padding:'5px 14px',fontSize:12,fontWeight:700,color:passed?'var(--emerald)':'var(--red)',fontFamily:'DM Mono,monospace',letterSpacing:'0.04em',marginBottom:10}}>
+            {passed ? '✓ PASS' : '✕ NEEDS WORK'}
           </div>
-          <div className="text-sm text-muted">{scenario && scenario.title}</div>
+          <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:16,letterSpacing:'-0.02em',marginBottom:4}}>{scenario?.title}</div>
+          <div style={{fontSize:12,color:'var(--text-muted)'}}>{scenario?.borrower?.name}</div>
         </div>
       </div>
 
-      <div className="bg-surface border border-border rounded-2xl p-5">
-        <h3 className="text-sm font-semibold text-primary mb-4">Category Breakdown</h3>
-        {CATEGORIES.map(([key, label, max]) => (
-          <ScoreBar key={key} label={label} value={scores[key]} max={max} />
-        ))}
+      {/* Category scores */}
+      <div style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:20,padding:'24px 24px'}}>
+        <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:14,letterSpacing:'-0.02em',marginBottom:18,color:'var(--text)'}}>Category Breakdown</div>
+        {CATS.map(([key, label, max]) => <Bar key={key} label={label} value={scores[key]} max={max} />)}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="bg-surface border border-border rounded-2xl p-4">
-          <h3 className="text-sm font-semibold text-emerald-400 mb-2">Went Well</h3>
-          <ul className="space-y-1">{(scorecard.what_went_well || []).map((item, i) => <li key={i} className="text-xs text-muted">• {item}</li>)}</ul>
+      {/* Went well / Missed */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+        <div style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:16,padding:'20px'}}>
+          <div style={{fontSize:12,fontWeight:700,color:'var(--emerald)',letterSpacing:'0.04em',marginBottom:12,fontFamily:'DM Mono,monospace'}}>✓ WENT WELL</div>
+          {(scorecard.what_went_well||[]).map((item: string, i: number) => <div key={i} style={{fontSize:13,color:'var(--text-muted)',marginBottom:8,paddingLeft:12,borderLeft:'2px solid var(--emerald)',lineHeight:1.5}}>{item}</div>)}
         </div>
-        <div className="bg-surface border border-border rounded-2xl p-4">
-          <h3 className="text-sm font-semibold text-red-400 mb-2">Missed</h3>
-          <ul className="space-y-1">{(scorecard.missed_opportunities || []).map((item, i) => <li key={i} className="text-xs text-muted">• {item}</li>)}</ul>
+        <div style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:16,padding:'20px'}}>
+          <div style={{fontSize:12,fontWeight:700,color:'var(--red)',letterSpacing:'0.04em',marginBottom:12,fontFamily:'DM Mono,monospace'}}>✕ MISSED</div>
+          {(scorecard.missed_opportunities||[]).map((item: string, i: number) => <div key={i} style={{fontSize:13,color:'var(--text-muted)',marginBottom:8,paddingLeft:12,borderLeft:'2px solid var(--red)',lineHeight:1.5}}>{item}</div>)}
         </div>
       </div>
 
-      <div className="bg-surface border border-border rounded-2xl p-4">
-        <h3 className="text-sm font-semibold text-primary mb-2">Coaching Notes</h3>
-        <ul className="space-y-1">{(scorecard.coaching_notes || []).map((note, i) => <li key={i} className="text-xs text-muted">{i+1}. {note}</li>)}</ul>
+      {/* Coaching */}
+      <div style={{background:'var(--bg-card)',border:'1px solid var(--border)',borderRadius:16,padding:'20px'}}>
+        <div style={{fontSize:12,fontWeight:700,color:'var(--accent)',letterSpacing:'0.04em',marginBottom:12,fontFamily:'DM Mono,monospace'}}>COACHING NOTES</div>
+        {(scorecard.coaching_notes||[]).map((note: string, i: number) => <div key={i} style={{fontSize:13,color:'var(--text-muted)',marginBottom:8,display:'flex',gap:10}}><span style={{color:'var(--text-faint)',fontFamily:'DM Mono,monospace',flexShrink:0}}>{String(i+1).padStart(2,'0')}</span>{note}</div>)}
       </div>
 
+      {/* Drill */}
       {scorecard.recommended_drill && (
-        <div className="bg-accent/5 border border-accent/20 rounded-2xl p-4">
-          <h3 className="text-sm font-semibold text-accent mb-1">Recommended Drill</h3>
-          <p className="text-xs text-muted">{scorecard.recommended_drill}</p>
+        <div style={{background:'var(--accent-dim)',border:'1px solid var(--border-accent)',borderRadius:16,padding:'20px'}}>
+          <div style={{fontSize:12,fontWeight:700,color:'var(--accent)',letterSpacing:'0.04em',marginBottom:8,fontFamily:'DM Mono,monospace'}}>RECOMMENDED DRILL</div>
+          <div style={{fontSize:13,color:'var(--text-muted)',lineHeight:1.6}}>{scorecard.recommended_drill}</div>
         </div>
       )}
 
-      <div className="flex gap-3 pt-2">
-        {onRetry && <button onClick={onRetry} className="flex-1 py-2.5 bg-accent text-white text-sm font-medium rounded-xl hover:bg-accent/90 transition-colors">Retry this scenario</button>}
-        {onNewScenario && <button onClick={onNewScenario} className="flex-1 py-2.5 bg-surface border border-border text-sm font-medium rounded-xl hover:border-accent/40 transition-all">Choose new scenario</button>}
+      {/* Actions */}
+      <div style={{display:'flex',gap:12,paddingBottom:32}}>
+        {onRetry && <button onClick={onRetry} style={{flex:1,padding:'13px',background:'var(--accent)',color:'#020b14',fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:14,letterSpacing:'-0.02em',border:'none',borderRadius:12,cursor:'pointer'}}>Retry Scenario</button>}
+        {onNewScenario && <button onClick={onNewScenario} style={{flex:1,padding:'13px',background:'transparent',color:'var(--text-muted)',fontFamily:'DM Sans,sans-serif',fontWeight:500,fontSize:14,border:'1px solid var(--border)',borderRadius:12,cursor:'pointer'}}>New Scenario</button>}
       </div>
     </div>
   );
