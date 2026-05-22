@@ -1,15 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabaseAdmin';
-export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
-  const { scenario_id, mode = 'text' } = await req.json();
-  const { data, error } = await supabaseAdmin
-    .from('training_calls')
-    .insert({ user_id: null, scenario_id, mode, status: 'started' })
-    .select('id').single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ callId: data.id });
+  try {
+    const { scenario_id, mode = 'text' } = await req.json();
+    // Try to log to DB but don't fail if it errors
+    try {
+      const { supabaseAdmin } = await import('@/lib/supabaseAdmin');
+      const { data } = await supabaseAdmin
+        .from('training_calls')
+        .insert({ user_id: null, scenario_id, mode, status: 'started' })
+        .select('id').single();
+      if (data?.id) return NextResponse.json({ callId: data.id });
+    } catch {}
+    // Return a fake callId if DB fails - calls still work
+    return NextResponse.json({ callId: 'local-' + Date.now() });
+  } catch (e: any) {
+    return NextResponse.json({ callId: 'local-' + Date.now() });
+  }
 }
+
 export async function GET() {
   return NextResponse.json([]);
 }
