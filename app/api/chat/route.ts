@@ -1,17 +1,23 @@
 import { NextRequest } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { buildBorrowerInstructions } from '@/lib/prompts';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
     const { scenario, messages } = await req.json();
+    
+    const system = 'You are ' + scenario.borrower.name + ', a real homeowner considering a mortgage refinance. Stay in character at all times. Be realistic - skeptical but not rude. Keep responses to 2-3 sentences max. Scenario: ' + scenario.title + '. Your motivation: ' + scenario.borrower.motivation + '. Your objections include: ' + (scenario.borrower.objections || []).join(', ') + '.';
+    
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const stream = await client.messages.stream({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 300,
-      system: buildBorrowerInstructions(scenario),
+      max_tokens: 150,
+      system,
       messages,
     });
+    
     const encoder = new TextEncoder();
     const readable = new ReadableStream({
       async start(ctrl) {
@@ -23,8 +29,10 @@ export async function POST(req: NextRequest) {
         ctrl.close();
       },
     });
+    
     return new Response(readable, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
   } catch (e: any) {
-    return new Response('Error: ' + e.message, { status: 500 });
+    console.error('Chat error:', e);
+    return new Response('Sorry, I could not respond.', { status: 200 });
   }
 }
