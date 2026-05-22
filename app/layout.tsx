@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'MS.IQ â Mortgage Sales Intelligence',
-  description: 'AI-powered mortgage sales call training',
+  title: 'MS.IQ Ã¢ÂÂ Mortgage Sales Intelligence',
+  description: 'AI-powered mortgage call training',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
